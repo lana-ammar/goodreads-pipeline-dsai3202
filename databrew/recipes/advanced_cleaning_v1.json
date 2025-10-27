@@ -1,0 +1,212 @@
+[
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "integer",
+        "sourceColumn": "rating"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "integer",
+        "sourceColumn": "n_votes"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "integer",
+        "sourceColumn": "ratings_count"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "decimal",
+        "sourceColumn": "average_rating"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "integer",
+        "sourceColumn": "publication_year"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "LEN",
+      "Parameters": {
+        "endPosition": "NaN",
+        "functionStepType": "LEN",
+        "ignoreCase": "false",
+        "sourceColumn": "review_text",
+        "startPosition": "NaN",
+        "targetColumn": "review_char_count"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "DUPLICATE",
+      "Parameters": {
+        "sourceColumn": "review_text",
+        "targetColumn": " rt_norm"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "REPLACE_PATTERN",
+      "Parameters": {
+        "pattern": "\\s+",
+        "sourceColumn": " rt_norm",
+        "value": " "
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "REMOVE_COMBINED",
+      "Parameters": {
+        "collapseConsecutiveWhitespace": "false",
+        "removeAllPunctuation": "false",
+        "removeAllQuotes": "false",
+        "removeAllWhitespace": "false",
+        "removeCustomCharacters": "false",
+        "removeCustomValue": "false",
+        "removeLeadingAndTrailingPunctuation": "false",
+        "removeLeadingAndTrailingQuotes": "true",
+        "removeLeadingAndTrailingWhitespace": "false",
+        "removeLetters": "false",
+        "removeNumbers": "false",
+        "removeSpecialCharacters": "false",
+        "sourceColumn": " rt_norm"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "LEN",
+      "Parameters": {
+        "endPosition": "NaN",
+        "functionStepType": "LEN",
+        "ignoreCase": "false",
+        "sourceColumn": " rt_norm",
+        "startPosition": "NaN",
+        "targetColumn": "len_with_spaces"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "DUPLICATE",
+      "Parameters": {
+        "sourceColumn": " rt_norm",
+        "targetColumn": " rt_no_spaces"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "REMOVE_COMBINED",
+      "Parameters": {
+        "collapseConsecutiveWhitespace": "false",
+        "removeAllPunctuation": "false",
+        "removeAllQuotes": "false",
+        "removeAllWhitespace": "false",
+        "removeCustomCharacters": "false",
+        "removeCustomValue": "false",
+        "removeLeadingAndTrailingPunctuation": "false",
+        "removeLeadingAndTrailingQuotes": "false",
+        "removeLeadingAndTrailingWhitespace": "false",
+        "removeLetters": "false",
+        "removeNumbers": "false",
+        "removeSpecialCharacters": "true",
+        "sourceColumn": " rt_no_spaces"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "REMOVE_COMBINED",
+      "Parameters": {
+        "collapseConsecutiveWhitespace": "false",
+        "removeAllPunctuation": "false",
+        "removeAllQuotes": "false",
+        "removeAllWhitespace": "true",
+        "removeCustomCharacters": "false",
+        "removeCustomValue": "false",
+        "removeLeadingAndTrailingPunctuation": "false",
+        "removeLeadingAndTrailingQuotes": "false",
+        "removeLeadingAndTrailingWhitespace": "false",
+        "removeLetters": "false",
+        "removeNumbers": "false",
+        "removeSpecialCharacters": "true",
+        "sourceColumn": " rt_no_spaces"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "LEN",
+      "Parameters": {
+        "endPosition": "NaN",
+        "functionStepType": "LEN",
+        "ignoreCase": "false",
+        "sourceColumn": " rt_no_spaces",
+        "startPosition": "NaN",
+        "targetColumn": " len_no_spaces"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "SUBTRACT",
+      "Parameters": {
+        "functionStepType": "SUBTRACT",
+        "sourceColumn1": "len_with_spaces",
+        "sourceColumn2": " len_no_spaces",
+        "targetColumn": "space_count"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "ADD",
+      "Parameters": {
+        "functionStepType": "ADD",
+        "sourceColumn1": "space_count",
+        "targetColumn": "review_length_raw",
+        "value2": "1"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "DELETE",
+      "Parameters": {
+        "sourceColumns": "[\" rt_no_spaces\"]"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "DELETE",
+      "Parameters": {
+        "sourceColumns": "[\" len_no_spaces\",\"len_with_spaces\",\"space_count\",\"review_length_raw\"]"
+      }
+    }
+  }
+]
