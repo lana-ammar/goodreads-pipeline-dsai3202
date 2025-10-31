@@ -1,0 +1,92 @@
+[
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "double",
+        "sourceColumn": "average_rating"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "CHANGE_DATA_TYPE",
+      "Parameters": {
+        "columnDataType": "double",
+        "sourceColumn": "rating"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "SUBTRACT",
+      "Parameters": {
+        "functionStepType": "SUBTRACT",
+        "sourceColumn1": "rating",
+        "sourceColumn2": "average_rating",
+        "targetColumn": "rating_diff"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "ABSOLUTE",
+      "Parameters": {
+        "functionStepType": "ABSOLUTE",
+        "sourceColumn": "rating_diff",
+        "targetColumn": "rating_deviation"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"rating\",\"targetColumnName\":\"user_avg_rating\",\"targetColumnDataType\":\"double\",\"functionName\":\"MEAN\"}]",
+        "sourceColumns": "[\"user_id\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"rating\",\"targetColumnName\":\"user_rating_std\",\"targetColumnDataType\":\"double\",\"functionName\":\"STANDARD_DEVIATION\"}]",
+        "sourceColumns": "[\"user_id\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "GROUP_BY",
+      "Parameters": {
+        "groupByAggFunctionOptions": "[{\"sourceColumnName\":\"ratings_count\",\"targetColumnName\":\"user_total_reviews\",\"targetColumnDataType\":\"string\",\"functionName\":\"COUNT\"}]",
+        "sourceColumns": "[\"user_id\"]",
+        "useNewDataFrame": "false"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "ADD",
+      "Parameters": {
+        "functionStepType": "ADD",
+        "sourceColumn1": "rating",
+        "targetColumn": "rating_ADD",
+        "value2": "1"
+      }
+    }
+  },
+  {
+    "Action": {
+      "Operation": "LN",
+      "Parameters": {
+        "functionStepType": "LN",
+        "sourceColumn": "rating_ADD",
+        "targetColumn": "Book Popularity Metrics"
+      }
+    }
+  }
+]
