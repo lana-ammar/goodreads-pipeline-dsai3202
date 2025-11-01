@@ -1,0 +1,9 @@
+# requirements.txt
+textblob
+transformers
+torch
+nltk
+scikit-learn
+pandas
+pyarrow
+emoji
